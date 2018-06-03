@@ -68,6 +68,9 @@ abstract class Record implements RecordBehavior{
             if(!is_null($this->$key) && !empty($this->$key)){
                 $upData[$key] = $this->$key;
             }
+            if($key == 'created_date'){
+                 $upData[$key] = date('Y-m-d H:i:s');
+            }
         }
         unset($upData['UID']);
         $results = $GLOBALS['db']
