@@ -63,6 +63,12 @@ class EndPoint extends API{
         }
         return $this->_authenticate();
     }
+    protected function verify(){
+        if(!$this->_verifyToken()){
+            throw new \Exception('Token Rejected');
+        }
+        return true;
+    }
     protected function quicklink(){
         $data = null;
         if(!isset($this->verb) && !isset($this->args[0]) && $this->method == 'POST'){ //create
