@@ -158,8 +158,14 @@ class EndPoint extends API{
             $data = \Crypt\Transaction::getAllByUser($this->user->username);
         }elseif(!isset($this->verb) &&(int)$this->args[0] && $this->method == 'GET'){
             $data = new \Crypt\Transaction($this->args[0]);
+            if($data->user != $this->user->username){
+                throw new Exception('Trying to access resetricted resource');
+            }
         }elseif((int)$this->args[0] && $this->method == 'PUT'){ //update by id
             $data = new \Crypt\Transaction($this->args[0]);
+            if($data->user != $this->user->username){
+                throw new Exception('Trying to access resetricted resource');
+            }
             $data->setFields($this->file)->update();
         }elseif(isset($this->verb)){
             $data = $this->_parseVerb();
@@ -177,8 +183,14 @@ class EndPoint extends API{
             $data = \Crypt\MiningPool::getAllByUser($this->user->username);
         }elseif(!isset($this->verb) &&(int)$this->args[0] && $this->method == 'GET'){
             $data = new \Crypt\MiningPool($this->args[0]);
+            if($data->user != $this->user->username){
+                throw new Exception('Trying to access resetricted resource');
+            }
         }elseif((int)$this->args[0] && $this->method == 'PUT'){ //update by id
             $data = new \Crypt\MiningPool($this->args[0]);
+            if($data->user != $this->user->username){
+                throw new Exception('Trying to access resetricted resource');
+            }
             $data->setFields($this->file)->update();
         }elseif(isset($this->verb)){
             $data = $this->_parseVerb();
@@ -196,8 +208,14 @@ class EndPoint extends API{
             $data = \Crypt\Wallet::getAllByUser($this->user->username);
         }elseif(!isset($this->verb) &&(int)$this->args[0] && $this->method == 'GET'){
             $data = new \Crypt\Wallet($this->args[0]);
+            if($data->user != $this->user->username){
+                throw new Exception('Trying to access resetricted resource');
+            }
         }elseif((int)$this->args[0] && $this->method == 'PUT'){ //update by id
             $data = new \Crypt\Wallet($this->args[0]);
+            if($data->user != $this->user->username){
+                throw new Exception('Trying to access resetricted resource');
+            }
             $data->setFields($this->file)->update();
         }elseif(isset($this->verb)){
             $data = $this->_parseVerb();
