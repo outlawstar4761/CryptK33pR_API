@@ -36,11 +36,32 @@ class EndPoint extends API{
         $this->user = $output;
         return true;
     }
+    private function _authenticate(){
+        $headers = array('request_token: ' . $this->headers['request_token'],'password: ' . $this->headers['password']);
+        $ch = curl_init();
+        curl_setopt($ch,CURLOPT_URL,self::ACCOUNTS . "authenticate/");
+        curl_setopt($ch,CURLOPT_HTTPHEADER,$headers);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);
+        $output = json_decode(curl_exec($ch));
+        curl_close($ch);
+        if(isset($output->error)){
+            throw new \Exception($output->error);
+        }
+        $this->headers['auth_token'] = $output->token;
+        $this->_verifyToken();
+        return $output;
+    }
     protected function example(){
         return array("endPoint"=>$this->endpoint,"verb"=>$this->verb,"args"=>$this->args,"request"=>$this->request);
     }
     protected function _parseVerb(){
         throw new \Exception('Verbs is unsupported');
+    }
+    protected function authenticate(){
+        if(!isset($this->headers['request_token']) || !isset($this->headers['password'])){
+            throw new \Exception('Missing required headers.');
+        }
+        return $this->_authenticate();
     }
     protected function quicklink(){
         $data = null;
