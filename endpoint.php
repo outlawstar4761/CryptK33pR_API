@@ -67,7 +67,7 @@ class EndPoint extends API{
         if(!$this->_verifyToken()){
             throw new \Exception('Token Rejected');
         }
-        return true;
+        return $this->headers['auth_token'];
     }
     protected function quicklink(){
         $data = null;
