@@ -16,10 +16,11 @@ class EndPoint extends API{
     public function __construct($request,$origin,$remoteHost)
     {
         parent::__construct($request);
-        if(!isset($this->headers['auth_token'])){
+        if(isset($this->headers['request_token']) && ! isset($this->headers['password'])){
+            throw new \Exception('Missing required headers.');
+        }elseif(!isset($this->headers['auth_token'])){
             throw new \Exception('Access Denied. No Token Present.');
-        }
-        if(!$this->_verifyToken()){
+        }elseif(!$this->_verifyToken()){
             throw new \Exception('Access Denied. Invalid Token');
         }
     }
@@ -58,9 +59,6 @@ class EndPoint extends API{
         throw new \Exception('Verbs is unsupported');
     }
     protected function authenticate(){
-        if(!isset($this->headers['request_token']) || !isset($this->headers['password'])){
-            throw new \Exception('Missing required headers.');
-        }
         return $this->_authenticate();
     }
     protected function verify(){
