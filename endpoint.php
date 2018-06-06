@@ -16,11 +16,11 @@ class EndPoint extends API{
     public function __construct($request,$origin,$remoteHost)
     {
         parent::__construct($request);
-        if(isset($this->headers['request_token']) && ! isset($this->headers['password'])){
+        if(isset($this->headers['request_token']) && !isset($this->headers['password'])){
             throw new \Exception('Missing required headers.');
-        }elseif(!isset($this->headers['auth_token'])){
+        }elseif(!isset($this->headers['auth_token']) && !isset($this->headers['request_token'])){
             throw new \Exception('Access Denied. No Token Present.');
-        }elseif(!$this->_verifyToken()){
+        }elseif(!$this->_verifyToken() && !isset($this->headers['request_token'])){
             throw new \Exception('Access Denied. Invalid Token');
         }
     }
